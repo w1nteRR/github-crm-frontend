@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import globals from 'globals'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
+import react from 'eslint-plugin-react'
 import tseslint from 'typescript-eslint'
 
 export default tseslint.config(
@@ -14,6 +15,7 @@ export default tseslint.config(
       globals: globals.browser,
     },
     plugins: {
+      react,
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
     },
@@ -23,6 +25,25 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+        'max-len': [
+          'error',
+            {
+              code: 100,
+              ignoreUrls: true,
+              ignoreStrings: true,
+              ignoreTemplateLiterals: true
+            }],
+      indent: ['error', 2],
+      quotes: ['error', 'single'],
+      semi: ['error', 'always'],
+      'comma-dangle': ['error', 'never'],
+      'object-curly-spacing': ['error', 'always'],
+      'react/jsx-indent': ['error', 2],
+      'react/jsx-indent-props': ['error', 2],
+      'no-multiple-empty-lines': ['error', { max: 1 }],
+      'spaced-comment': ['error', 'always'],
+      'keyword-spacing': ['error', { before: true, after: true }],
+      'block-spacing': ['error', 'always']
     },
   },
 )
