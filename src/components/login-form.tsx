@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import { cn } from '@/lib/utils';
@@ -13,19 +13,23 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RoutesPaths } from '@/navigation/routes.enum.ts';
-
-interface IFormInput {
-  email: string
-  password: string
-}
+import { ISignInFormInput } from '@/utils/validation/schemas/auth/auth-form.schema.ts';
+import { useAuthContext } from '@/hooks/auth/useAuthContext.ts';
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
 
-  const { register, handleSubmit } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const { signIn } = useAuthContext();
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm<ISignInFormInput>();
+  const onSubmit: SubmitHandler<ISignInFormInput> = async (data) => {
+    await signIn(data);
+
+    navigate(RoutesPaths.Home);
+  };
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>

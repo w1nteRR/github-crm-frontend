@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -16,17 +16,29 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RoutesPaths } from '@/navigation/routes.enum.ts';
 import { ISignUpFormInput, signUpFormSchema } from '@/utils/validation/schemas/auth/auth-form.schema.ts';
+import { useAuthContext } from '@/hooks/auth/useAuthContext.ts';
 
 export function SignUpForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
 
+  const { signUp } = useAuthContext();
+  const navigate = useNavigate();
+
   const { register, handleSubmit, formState: { errors } } = useForm<ISignUpFormInput>({
     resolver : zodResolver (signUpFormSchema)
   });
 
-  const onSubmit: SubmitHandler<ISignUpFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<ISignUpFormInput> = async (data) => {
+    try {
+      await signUp(data);
+
+      navigate(RoutesPaths.SignIn);
+    } catch (error) {
+      console.log('Error: ', error);
+    }
+  };
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>
