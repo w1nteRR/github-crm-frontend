@@ -7,19 +7,20 @@ import SignIn from '@/navigation/routes/auth/sign-in.tsx';
 import Home from '@/navigation/routes/home.tsx';
 import SignUp from '@/navigation/routes/auth/sign-up.tsx';
 
-import { requireAuth } from '@/utils/auth/require-route-auth.ts';
+import { requireAuth, requireGuest } from '@/utils/auth/require-route-auth.ts';
 
 export const router = createBrowserRouter([
   {
     path: 'auth',
     Component: AuthLayout,
+    loader: requireGuest,
     children: [
       {
-        path: ':sign-in',
+        path: 'sign-in',
         Component: SignIn
       },
       {
-        path: ':sign-up',
+        path: 'sign-up',
         Component: SignUp
       }
     ]
