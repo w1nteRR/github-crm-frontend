@@ -11,7 +11,15 @@ export async function requireAuth(): Promise<boolean> {
   return true;
 }
 
+export async function requireGuest(): Promise<void>{
+  const isAuthenticated = await checkAuth();
+
+  if (isAuthenticated) {
+    throw redirect(RoutesPaths.Home);
+  }
+}
+
 async function checkAuth(): Promise<boolean> {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('access_token');
   return Boolean(token);
 }
